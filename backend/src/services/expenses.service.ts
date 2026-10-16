@@ -59,4 +59,9 @@ export class ExpensesService {
     }
     return expenseFromDBO(row);
   }
+
+  public static async getExpenseById(id: number): Promise<Expense | undefined> {
+  const row = await expenseQuery().where({ id }).first();
+  return row ? expenseFromDBO(row) : undefined;
+}
 }
