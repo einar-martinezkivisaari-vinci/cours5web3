@@ -11,11 +11,10 @@
     "build": "npm install && npm run contract:emit && npx prisma db migrate",
     "start": "node app.ts",
     "typecheck": "tsc --noEmit",
-    "postinstall": "prisma skills sync || exit 0",
     "contract:emit": "prisma contract emit"
   },
   "dependencies": {
-    "@prisma/orm-postgres": "8.0.0-rc.14",
+    "@prisma/orm-postgres": "8.0.0-rc.12",
     "cors": "^2.8.6",
     "dotenv": "^18.0.1",
     "express": "^5.2.1",
@@ -28,7 +27,7 @@
     "@types/express": "^5.0.6",
     "@types/morgan": "^1.9.10",
     "@types/node": "^24.13.3",
-    "prisma": "8.0.0-rc.20",
+    "prisma": "8.0.0-rc.15",
     "typescript": "^7.0.2"
   }
 }
