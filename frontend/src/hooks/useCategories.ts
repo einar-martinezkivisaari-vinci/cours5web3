@@ -1,16 +1,18 @@
 import { useEffect, useState } from "react";
 import type { Category } from "../types/Category";
+import { apiRequest } from "../lib/rest";
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:3000";
+// const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:3000";
 
 async function fetchAllCategories() {
-  return fetch(`${API_BASE_URL}/api/categories`)
-    .then((res) => res.json())
-    .then((data) => (Array.isArray(data) ? (data as Category[]) : []))
-    .catch((error) => {
-      console.error("Error getting categories:", error);
-      return [] as Category[];
-    });
+  return apiRequest<Category[]>("/api/categories");
+  // return fetch(`${API_BASE_URL}/api/categories`)
+  //   .then((res) => res.json())
+  //   .then((data) => (Array.isArray(data) ? (data as Category[]) : []))
+  //   .catch((error) => {
+  //     console.error("Error getting categories:", error);
+  //     return [] as Category[];
+  //   });
 }
 
 function useCategories() {

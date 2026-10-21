@@ -1,16 +1,18 @@
 import { useState, useEffect } from "react";
 import type { User } from "../types/User";
+import { apiRequest } from "../lib/rest";
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:3000";
+// const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:3000";
 
 async function fetchAllUsers(): Promise<User[]> {
-  return fetch(`${API_BASE_URL}/api/users`)
-    .then((res) => res.json())
-    .then((data) => (Array.isArray(data) ? (data as User[]) : []))
-    .catch((error) => {
-      console.error("Error getting users:", error);
-      return [] as User[];
-    });
+  return apiRequest<User[]>("/api/users")
+  // return fetch(`${API_BASE_URL}/api/users`)
+  //   .then((res) => res.json())
+  //   .then((data) => (Array.isArray(data) ? (data as User[]) : []))
+  //   .catch((error) => {
+  //     console.error("Error getting users:", error);
+  //     return [] as User[];
+  //   });
 }
 
 function useUsers() {
