@@ -1,7 +1,39 @@
 import type { LoaderFunctionArgs } from "react-router";
-import { apiRequest } from "../../lib/rest";
 import type { Expense } from "../../types/Expense";
+import { graphqlRequest } from "../../lib/graphql";
+
+const EXPENSE_QUERY = /* GraphQL */ `
+  query Expense($id: Int!) {
+    expense(id: $id) {
+      id
+      description
+      amount
+      date
+      payer {
+        id
+        name
+        email
+        bankAccount
+      }
+      participants {
+        id
+        name
+        email
+      }
+      category {
+        name
+        colour
+      }
+    }
+  }
+`;
 
 export async function expenseShowLoader({ params }: LoaderFunctionArgs): Promise<Expense> {
-  return apiRequest<Expense>(`/api/expenses/${params.id}`);
+
+  const data = await graphqlRequest<{ expense: Expense | null }>(EXPENSE_QUERY, { id: Number(params.id) });
+
+  if (!data.expense) {
+    throw new Response('Expense not found', { status: 404 });
+  }
+  return data.expense;
 }

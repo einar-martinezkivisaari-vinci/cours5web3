@@ -7,11 +7,18 @@ export interface Expense {
   id: number;
   date: string;
   description: string;
-  payerId: number;
-  payer: User;
   amount: number;
+  payer: User;
   participants: User[];
-  categoryId?: number;
+  category?: Category;
+}
+
+export interface ExpenseListItem {
+  id: number;
+  date: string;
+  description: string;
+  amount: number;
+  payer: Pick<User, "name">;
   category?: Category;
 }
 
@@ -26,7 +33,11 @@ export const ExpenseFormSchema = z.object({
 
 export type ExpenseFormValues = z.infer<typeof ExpenseFormSchema>;
 
-// NewExpense is used when submitting a form: participants are IDs, payer/category are resolved server-side
-export type NewExpense = Omit<Expense, 'id' | 'payer' | 'participants' | 'category'> & {
+export interface NewExpense {
+  description: string;
+  amount: number;
+  date: string;
+  payerId: number;
   participants: number[];
-};
+  categoryId?: number;
+}
