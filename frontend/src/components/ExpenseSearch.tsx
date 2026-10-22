@@ -1,5 +1,4 @@
 import { useForm } from "react-hook-form";
-import type { ExpenseFilter } from "../hooks/useExpenses";
 import useUsers from "../hooks/useUsers";
 import useCategories from "../hooks/useCategories";
 import { useSearchParams } from "react-router";
