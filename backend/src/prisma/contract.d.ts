@@ -34,7 +34,7 @@ import type {
 } from '@prisma/orm-postgres/contract/types';
 
 export type StorageHash =
-  StorageHashBase<'95f37b9b12fec5762ac676ab11c49cdd4c278d51c361c943fdefb78b8a34c160'>;
+  StorageHashBase<'36d08ae6dc4502531c6692b363c04e9aaa9077a6d14e61539dc4892da2e38a31'>;
 export type ExecutionHash = ExecutionHashBase<string>;
 export type ProfileHash =
   ProfileHashBase<'3916f444a8a17ad749191acf9e08dad97d1a327b88c2f1d45d12f240296aa8b2'>;
@@ -250,68 +250,70 @@ type DefaultLiteralValue<CodecId extends string, Encoded> = CodecId extends keyo
 export type FieldOutputTypes = {
   readonly public: {
     readonly Category: {
-      readonly colour: CodecTypes['pg/text@1']['output'];
       readonly id: CodecTypes['pg/int4@1']['output'];
       readonly name: CodecTypes['pg/text@1']['output'];
+      readonly colour: CodecTypes['pg/text@1']['output'];
     };
     readonly Expense: {
-      readonly amount: CodecTypes['pg/float8@1']['output'];
-      readonly categoryId: CodecTypes['pg/int4@1']['output'] | null;
-      readonly date: CodecTypes['pg/timestamptz-string@1']['output'];
-      readonly description: CodecTypes['pg/text@1']['output'];
       readonly id: CodecTypes['pg/int4@1']['output'];
+      readonly description: CodecTypes['pg/text@1']['output'];
+      readonly amount: CodecTypes['pg/float8@1']['output'];
+      readonly date: CodecTypes['pg/timestamptz-string@1']['output'];
       readonly payerId: CodecTypes['pg/int4@1']['output'];
+      readonly categoryId: CodecTypes['pg/int4@1']['output'] | null;
     };
     readonly Participations: {
       readonly expenseId: CodecTypes['pg/int4@1']['output'];
       readonly userId: CodecTypes['pg/int4@1']['output'];
     };
     readonly Transfer: {
+      readonly id: CodecTypes['pg/int4@1']['output'];
       readonly amount: CodecTypes['pg/float8@1']['output'];
       readonly date: CodecTypes['pg/timestamptz-string@1']['output'];
-      readonly id: CodecTypes['pg/int4@1']['output'];
       readonly sourceId: CodecTypes['pg/int4@1']['output'];
       readonly targetId: CodecTypes['pg/int4@1']['output'];
     };
     readonly User: {
-      readonly bankAccount: CodecTypes['pg/text@1']['output'] | null;
-      readonly email: CodecTypes['pg/text@1']['output'];
       readonly id: CodecTypes['pg/int4@1']['output'];
       readonly name: CodecTypes['pg/text@1']['output'];
+      readonly email: CodecTypes['pg/text@1']['output'];
+      readonly bankAccount: CodecTypes['pg/text@1']['output'] | null;
+      readonly passwordHash: CodecTypes['pg/text@1']['output'];
     };
   };
 };
 export type FieldInputTypes = {
   readonly public: {
     readonly Category: {
-      readonly colour: CodecTypes['pg/text@1']['input'];
       readonly id: CodecTypes['pg/int4@1']['input'];
       readonly name: CodecTypes['pg/text@1']['input'];
+      readonly colour: CodecTypes['pg/text@1']['input'];
     };
     readonly Expense: {
-      readonly amount: CodecTypes['pg/float8@1']['input'];
-      readonly categoryId: CodecTypes['pg/int4@1']['input'] | null;
-      readonly date: CodecTypes['pg/timestamptz-string@1']['input'];
-      readonly description: CodecTypes['pg/text@1']['input'];
       readonly id: CodecTypes['pg/int4@1']['input'];
+      readonly description: CodecTypes['pg/text@1']['input'];
+      readonly amount: CodecTypes['pg/float8@1']['input'];
+      readonly date: CodecTypes['pg/timestamptz-string@1']['input'];
       readonly payerId: CodecTypes['pg/int4@1']['input'];
+      readonly categoryId: CodecTypes['pg/int4@1']['input'] | null;
     };
     readonly Participations: {
       readonly expenseId: CodecTypes['pg/int4@1']['input'];
       readonly userId: CodecTypes['pg/int4@1']['input'];
     };
     readonly Transfer: {
+      readonly id: CodecTypes['pg/int4@1']['input'];
       readonly amount: CodecTypes['pg/float8@1']['input'];
       readonly date: CodecTypes['pg/timestamptz-string@1']['input'];
-      readonly id: CodecTypes['pg/int4@1']['input'];
       readonly sourceId: CodecTypes['pg/int4@1']['input'];
       readonly targetId: CodecTypes['pg/int4@1']['input'];
     };
     readonly User: {
-      readonly bankAccount: CodecTypes['pg/text@1']['input'] | null;
-      readonly email: CodecTypes['pg/text@1']['input'];
       readonly id: CodecTypes['pg/int4@1']['input'];
       readonly name: CodecTypes['pg/text@1']['input'];
+      readonly email: CodecTypes['pg/text@1']['input'];
+      readonly bankAccount: CodecTypes['pg/text@1']['input'] | null;
+      readonly passwordHash: CodecTypes['pg/text@1']['input'];
     };
   };
 };
@@ -346,6 +348,7 @@ export type StorageColumnTypes = {
       readonly email: CodecTypes['pg/text@1']['output'];
       readonly id: CodecTypes['pg/int4@1']['output'];
       readonly name: CodecTypes['pg/text@1']['output'];
+      readonly passwordHash: CodecTypes['pg/text@1']['output'];
     };
   };
 };
@@ -380,24 +383,32 @@ export type StorageColumnInputTypes = {
       readonly email: CodecTypes['pg/text@1']['input'];
       readonly id: CodecTypes['pg/int4@1']['input'];
       readonly name: CodecTypes['pg/text@1']['input'];
+      readonly passwordHash: CodecTypes['pg/text@1']['input'];
     };
   };
 };
 
 export namespace Models {
-  export type public_Category = {
-    colour: CodecTypes['pg/text@1']['output'];
+  export type public_User = {
     id: CodecTypes['pg/int4@1']['output'];
     name: CodecTypes['pg/text@1']['output'];
-    readonly [RelationKeys]?: never;
+    email: CodecTypes['pg/text@1']['output'];
+    bankAccount: CodecTypes['pg/text@1']['output'] | null;
+    passwordHash: CodecTypes['pg/text@1']['output'];
+    paidExpenses: public_Expense[];
+    participatedExpenses: public_Expense[];
+    transfersIn: public_Transfer[];
+    transfersOut: public_Transfer[];
+    readonly [RelationKeys]?:
+      'paidExpenses' | 'participatedExpenses' | 'transfersIn' | 'transfersOut';
   };
   export type public_Expense = {
-    amount: CodecTypes['pg/float8@1']['output'];
-    categoryId: CodecTypes['pg/int4@1']['output'] | null;
-    date: CodecTypes['pg/timestamptz-string@1']['output'];
-    description: CodecTypes['pg/text@1']['output'];
     id: CodecTypes['pg/int4@1']['output'];
+    description: CodecTypes['pg/text@1']['output'];
+    amount: CodecTypes['pg/float8@1']['output'];
+    date: CodecTypes['pg/timestamptz-string@1']['output'];
     payerId: CodecTypes['pg/int4@1']['output'];
+    categoryId: CodecTypes['pg/int4@1']['output'] | null;
     category: public_Category | null;
     participants: public_User[];
     payer: public_User;
@@ -411,36 +422,30 @@ export namespace Models {
     readonly [RelationKeys]?: 'expense' | 'user';
   };
   export type public_Transfer = {
+    id: CodecTypes['pg/int4@1']['output'];
     amount: CodecTypes['pg/float8@1']['output'];
     date: CodecTypes['pg/timestamptz-string@1']['output'];
-    id: CodecTypes['pg/int4@1']['output'];
     sourceId: CodecTypes['pg/int4@1']['output'];
     targetId: CodecTypes['pg/int4@1']['output'];
     source: public_User;
     target: public_User;
     readonly [RelationKeys]?: 'source' | 'target';
   };
-  export type public_User = {
-    bankAccount: CodecTypes['pg/text@1']['output'] | null;
-    email: CodecTypes['pg/text@1']['output'];
+  export type public_Category = {
     id: CodecTypes['pg/int4@1']['output'];
     name: CodecTypes['pg/text@1']['output'];
-    paidExpenses: public_Expense[];
-    participatedExpenses: public_Expense[];
-    transfersIn: public_Transfer[];
-    transfersOut: public_Transfer[];
-    readonly [RelationKeys]?:
-      'paidExpenses' | 'participatedExpenses' | 'transfersIn' | 'transfersOut';
+    colour: CodecTypes['pg/text@1']['output'];
+    readonly [RelationKeys]?: never;
   };
 }
 
 export declare const models: {
   public: {
-    Category: Models.public_Category;
+    User: Models.public_User;
     Expense: Models.public_Expense;
     Participations: Models.public_Participations;
     Transfer: Models.public_Transfer;
-    User: Models.public_User;
+    Category: Models.public_Category;
   };
 };
 
@@ -464,11 +469,6 @@ type ContractBase = Omit<
           readonly table: {
             readonly category: {
               columns: {
-                readonly colour: {
-                  readonly nativeType: 'text';
-                  readonly codecId: 'pg/text@1';
-                  readonly nullable: false;
-                };
                 readonly id: {
                   readonly nativeType: 'int4';
                   readonly codecId: 'pg/int4@1';
@@ -483,6 +483,11 @@ type ContractBase = Omit<
                   readonly codecId: 'pg/text@1';
                   readonly nullable: false;
                 };
+                readonly colour: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                };
               };
               primaryKey: { readonly columns: readonly ['id'] };
               uniques: readonly [{ readonly columns: readonly ['name'] }];
@@ -491,27 +496,6 @@ type ContractBase = Omit<
             };
             readonly expense: {
               columns: {
-                readonly amount: {
-                  readonly nativeType: 'float8';
-                  readonly codecId: 'pg/float8@1';
-                  readonly nullable: false;
-                };
-                readonly categoryId: {
-                  readonly nativeType: 'int4';
-                  readonly codecId: 'pg/int4@1';
-                  readonly nullable: true;
-                };
-                readonly date: {
-                  readonly nativeType: 'timestamptz';
-                  readonly codecId: 'pg/timestamptz-string@1';
-                  readonly nullable: false;
-                  readonly default: { readonly kind: 'function'; readonly expression: 'now()' };
-                };
-                readonly description: {
-                  readonly nativeType: 'text';
-                  readonly codecId: 'pg/text@1';
-                  readonly nullable: false;
-                };
                 readonly id: {
                   readonly nativeType: 'int4';
                   readonly codecId: 'pg/int4@1';
@@ -521,25 +505,46 @@ type ContractBase = Omit<
                     readonly expression: 'autoincrement()';
                   };
                 };
+                readonly description: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                };
+                readonly amount: {
+                  readonly nativeType: 'float8';
+                  readonly codecId: 'pg/float8@1';
+                  readonly nullable: false;
+                };
+                readonly date: {
+                  readonly nativeType: 'timestamptz';
+                  readonly codecId: 'pg/timestamptz-string@1';
+                  readonly nullable: false;
+                  readonly default: { readonly kind: 'function'; readonly expression: 'now()' };
+                };
                 readonly payerId: {
                   readonly nativeType: 'int4';
                   readonly codecId: 'pg/int4@1';
                   readonly nullable: false;
+                };
+                readonly categoryId: {
+                  readonly nativeType: 'int4';
+                  readonly codecId: 'pg/int4@1';
+                  readonly nullable: true;
                 };
               };
               primaryKey: { readonly columns: readonly ['id'] };
               uniques: readonly [];
               indexes: readonly [
                 {
-                  readonly name: 'expense_categoryId_idx_15c304f2';
-                  readonly prefix: 'expense_categoryId_idx';
-                  readonly columns: readonly ['categoryId'];
-                  readonly unique: false;
-                },
-                {
                   readonly name: 'expense_payerId_idx_3d3ae95d';
                   readonly prefix: 'expense_payerId_idx';
                   readonly columns: readonly ['payerId'];
+                  readonly unique: false;
+                },
+                {
+                  readonly name: 'expense_categoryId_idx_15c304f2';
+                  readonly prefix: 'expense_categoryId_idx';
+                  readonly columns: readonly ['categoryId'];
                   readonly unique: false;
                 },
               ];
@@ -628,6 +633,15 @@ type ContractBase = Omit<
             };
             readonly transfer: {
               columns: {
+                readonly id: {
+                  readonly nativeType: 'int4';
+                  readonly codecId: 'pg/int4@1';
+                  readonly nullable: false;
+                  readonly default: {
+                    readonly kind: 'function';
+                    readonly expression: 'autoincrement()';
+                  };
+                };
                 readonly amount: {
                   readonly nativeType: 'float8';
                   readonly codecId: 'pg/float8@1';
@@ -638,15 +652,6 @@ type ContractBase = Omit<
                   readonly codecId: 'pg/timestamptz-string@1';
                   readonly nullable: false;
                   readonly default: { readonly kind: 'function'; readonly expression: 'now()' };
-                };
-                readonly id: {
-                  readonly nativeType: 'int4';
-                  readonly codecId: 'pg/int4@1';
-                  readonly nullable: false;
-                  readonly default: {
-                    readonly kind: 'function';
-                    readonly expression: 'autoincrement()';
-                  };
                 };
                 readonly sourceId: {
                   readonly nativeType: 'int4';
@@ -704,16 +709,6 @@ type ContractBase = Omit<
             };
             readonly user: {
               columns: {
-                readonly bankAccount: {
-                  readonly nativeType: 'text';
-                  readonly codecId: 'pg/text@1';
-                  readonly nullable: true;
-                };
-                readonly email: {
-                  readonly nativeType: 'text';
-                  readonly codecId: 'pg/text@1';
-                  readonly nullable: false;
-                };
                 readonly id: {
                   readonly nativeType: 'int4';
                   readonly codecId: 'pg/int4@1';
@@ -724,6 +719,21 @@ type ContractBase = Omit<
                   };
                 };
                 readonly name: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                };
+                readonly email: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                };
+                readonly bankAccount: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: true;
+                };
+                readonly passwordHash: {
                   readonly nativeType: 'text';
                   readonly codecId: 'pg/text@1';
                   readonly nullable: false;
@@ -745,14 +755,14 @@ type ContractBase = Omit<
   readonly target: 'postgres';
   readonly targetFamily: 'sql';
   readonly roots: {
-    readonly category: { readonly namespace: 'public' & NamespaceId; readonly model: 'Category' };
+    readonly user: { readonly namespace: 'public' & NamespaceId; readonly model: 'User' };
     readonly expense: { readonly namespace: 'public' & NamespaceId; readonly model: 'Expense' };
     readonly participations: {
       readonly namespace: 'public' & NamespaceId;
       readonly model: 'Participations';
     };
     readonly transfer: { readonly namespace: 'public' & NamespaceId; readonly model: 'Transfer' };
-    readonly user: { readonly namespace: 'public' & NamespaceId; readonly model: 'User' };
+    readonly category: { readonly namespace: 'public' & NamespaceId; readonly model: 'Category' };
   };
   readonly domain: {
     readonly namespaces: {
@@ -760,15 +770,15 @@ type ContractBase = Omit<
         readonly models: {
           readonly Category: {
             readonly fields: {
-              readonly colour: {
-                readonly nullable: false;
-                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
-              };
               readonly id: {
                 readonly nullable: false;
                 readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
               };
               readonly name: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly colour: {
                 readonly nullable: false;
                 readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
               };
@@ -778,21 +788,25 @@ type ContractBase = Omit<
               readonly table: 'category';
               readonly namespaceId: 'public';
               readonly fields: {
-                readonly colour: { readonly column: 'colour' };
                 readonly id: { readonly column: 'id' };
                 readonly name: { readonly column: 'name' };
+                readonly colour: { readonly column: 'colour' };
               };
             };
           };
           readonly Expense: {
             readonly fields: {
+              readonly id: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
+              };
+              readonly description: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
               readonly amount: {
                 readonly nullable: false;
                 readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/float8@1' };
-              };
-              readonly categoryId: {
-                readonly nullable: true;
-                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
               };
               readonly date: {
                 readonly nullable: false;
@@ -801,16 +815,12 @@ type ContractBase = Omit<
                   readonly codecId: 'pg/timestamptz-string@1';
                 };
               };
-              readonly description: {
-                readonly nullable: false;
-                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
-              };
-              readonly id: {
+              readonly payerId: {
                 readonly nullable: false;
                 readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
               };
-              readonly payerId: {
-                readonly nullable: false;
+              readonly categoryId: {
+                readonly nullable: true;
                 readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
               };
             };
@@ -856,12 +866,12 @@ type ContractBase = Omit<
               readonly table: 'expense';
               readonly namespaceId: 'public';
               readonly fields: {
-                readonly amount: { readonly column: 'amount' };
-                readonly categoryId: { readonly column: 'categoryId' };
-                readonly date: { readonly column: 'date' };
-                readonly description: { readonly column: 'description' };
                 readonly id: { readonly column: 'id' };
+                readonly description: { readonly column: 'description' };
+                readonly amount: { readonly column: 'amount' };
+                readonly date: { readonly column: 'date' };
                 readonly payerId: { readonly column: 'payerId' };
+                readonly categoryId: { readonly column: 'categoryId' };
               };
             };
           };
@@ -910,6 +920,10 @@ type ContractBase = Omit<
           };
           readonly Transfer: {
             readonly fields: {
+              readonly id: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
+              };
               readonly amount: {
                 readonly nullable: false;
                 readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/float8@1' };
@@ -920,10 +934,6 @@ type ContractBase = Omit<
                   readonly kind: 'scalar';
                   readonly codecId: 'pg/timestamptz-string@1';
                 };
-              };
-              readonly id: {
-                readonly nullable: false;
-                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
               };
               readonly sourceId: {
                 readonly nullable: false;
@@ -958,9 +968,9 @@ type ContractBase = Omit<
               readonly table: 'transfer';
               readonly namespaceId: 'public';
               readonly fields: {
+                readonly id: { readonly column: 'id' };
                 readonly amount: { readonly column: 'amount' };
                 readonly date: { readonly column: 'date' };
-                readonly id: { readonly column: 'id' };
                 readonly sourceId: { readonly column: 'sourceId' };
                 readonly targetId: { readonly column: 'targetId' };
               };
@@ -968,19 +978,23 @@ type ContractBase = Omit<
           };
           readonly User: {
             readonly fields: {
-              readonly bankAccount: {
-                readonly nullable: true;
+              readonly id: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
+              };
+              readonly name: {
+                readonly nullable: false;
                 readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
               };
               readonly email: {
                 readonly nullable: false;
                 readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
               };
-              readonly id: {
-                readonly nullable: false;
-                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
+              readonly bankAccount: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
               };
-              readonly name: {
+              readonly passwordHash: {
                 readonly nullable: false;
                 readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
               };
@@ -1042,10 +1056,11 @@ type ContractBase = Omit<
               readonly table: 'user';
               readonly namespaceId: 'public';
               readonly fields: {
-                readonly bankAccount: { readonly column: 'bankAccount' };
-                readonly email: { readonly column: 'email' };
                 readonly id: { readonly column: 'id' };
                 readonly name: { readonly column: 'name' };
+                readonly email: { readonly column: 'email' };
+                readonly bankAccount: { readonly column: 'bankAccount' };
+                readonly passwordHash: { readonly column: 'passwordHash' };
               };
             };
           };

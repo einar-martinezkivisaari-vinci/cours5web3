@@ -4,8 +4,9 @@ import { ExpensesService } from '../services/expenses.service.ts';
 import { CategoriesService } from '../services/categories.service.ts';
 import { parseNewExpense, type Expense } from '../types/expense.ts';
 import { GraphQLError } from 'graphql';
+import type { GraphQLContext } from '../types/GraphQLContext.ts';
 
-export const schema = createSchema({
+export const schema = createSchema<GraphQLContext>({
   typeDefs: /* GraphQL */ `
     type User {
       id: Int!
@@ -37,6 +38,7 @@ export const schema = createSchema({
     }
 
     type Query {
+      me: User
       expenses(filter: ExpenseFilter): [Expense!]!
       expense(id: Int!): Expense
       users: [User!]!
@@ -61,6 +63,8 @@ export const schema = createSchema({
       date: (expense: Expense) => expense.date.toISOString(),
     },
     Query: {
+      me: (_parent, _args, ctx) =>
+        ctx.userJWT ? UsersService.getById(ctx.userJWT.userId) : null,
       expenses: (_parent, args) => ExpensesService.getExpenses(args.filter ?? {}),
       users: () => UsersService.getUsers(),
       expense: (_parent, args) => ExpensesService.getExpenseById(args.id),
